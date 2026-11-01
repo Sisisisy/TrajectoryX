@@ -1,0 +1,23 @@
+LOCAL VALIDATION - SUBMISSION 2 (2026-11-01)
+
+Environment: Python re-creation of the Levine map (the official levine.png), 819-beam
+270 deg LiDAR with 0.01 m noise, lidar 0.275 m ahead of base_link, kinematic car with
+steering-rate and acceleration limits, collision = car footprint touching a wall.
+ROS 2 and the official simulator were NOT available.
+
+Passed:
+- 3 timed laps, 0 collisions at max_speed 0.8 (3 seeds): ~83.7 s per lap.
+- 3 timed laps, 0 collisions at max_speed 0.4: ~166 s per lap.
+- Start nose-first inside the dead-end pocket: reverses out, continues, laps, 0 collisions.
+- Start facing the corridor wall: recovers, 0 collisions.
+- Node logic with stubbed ROS modules: odometry yaw conversion, empty/NaN/all-zero/
+  zero-increment scans all produce a stop command.
+- Python syntax check of all package files.
+
+Known behaviour:
+- Without odometry the LiDAR-only fallback follows the open east tail of the map out of
+  the track (the tail has no end wall). Route following with odometry avoids this.
+- Started facing against the lap direction, the car is not guaranteed to turn around.
+
+Not performed: colcon build, real ROS topics, RViz, official collision detector,
+physical car.

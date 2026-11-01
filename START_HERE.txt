@@ -1,0 +1,51 @@
+F1TENTH — DEADLINE PACKAGE
+
+WHAT TO SUBMIT
+The source ZIP, using the organizer-specified submission method. If the organizer
+requires Git instead, upload this source to your own repository and give its URL,
+full 40-character commit ID, package name, command, and README. No GitHub repository
+has been created or published for you. No code has been sent to the organizers.
+The linked guide allows USB ZIP or Git; check your actual deadline announcement.
+
+ON THE OTHER LAPTOP
+The other laptop needs Ubuntu 24.04 x86_64, ROS 2 Jazzy, and the official V1.1
+simulator already installed. Windows alone is insufficient for these scripts.
+Extract the ZIP. Open a terminal in this folder.
+Replace /path/to/competition-repo in every command with the real simulator folder.
+
+1. BUILD
+bash build.sh /path/to/competition-repo
+
+2. START SIMULATOR in another terminal, from the competition repository:
+./scripts/launch_sim.sh
+Stop any PS5/manual teleoperation or other driving controller.
+
+3. VERIFY CONNECTIONS (keeps speed at zero for approximately 12 seconds)
+bash verify.sh /path/to/competition-repo
+Expected: PASS. If it fails, copy the complete terminal output for troubleshooting.
+
+4. DRIVE SLOWLY
+bash run.sh /path/to/competition-repo 0.4
+Watch RViz. First finish-line crossing starts the timer; the NEXT completes lap 1.
+Verify THREE TIMED LAPS and ZERO COLLISIONS. Ctrl+C stops the controller.
+If a drive command remains active, from the official repository run:
+./scripts/stop_car.sh
+
+5. OPTIONAL BASELINE SPEED (only after a successful low-speed test)
+bash run.sh /path/to/competition-repo 0.8
+Respect any lower speed cap announced by the organizers. The official cap is not
+specified in the linked documentation. No lap-time threshold is stated for Stage 1.
+Do not change code or settings during an official attempt.
+
+PACKAGE NAME: team_controller
+DECLARED DEFAULT COMMAND: ros2 run team_controller controller
+DEFAULT MAXIMUM REQUESTED SPEED: 0.8 m/s
+LOW-SPEED COMMAND: ros2 run team_controller controller --ros-args -p max_speed:=0.4
+
+STATUS (submission 2)
+Adds route following from the official Levine centerline, stuck recovery (reverse),
+and an odometry subscription (nav_msgs). Checked locally in a Python re-creation of
+the Levine map; ROS build and official-simulator lap tests have not been performed. This is a baseline for verification, not a guaranteed
+qualifying controller. See team_controller/README.md and TEST_RESULTS.txt.
+Do not include generated controller_ws/build/install/log or __pycache__ folders
+if you re-zip the source after testing. The supplied ZIP already excludes them.
